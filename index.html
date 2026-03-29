@@ -25,17 +25,29 @@
             --magic-glow: rgba(255, 175, 204, 0.3);
         }
 
+        /* ✨ 終極固定背景：解決手機抖動問題 */
+        .bg-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh; /* 鎖死高度 */
+            background-image: url('bg.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            z-index: -1;
+            /* 修正部分手機瀏覽器在捲動時的背景重算 */
+            will-change: transform;
+        }
+
         body {
             font-family: 'jf-openhuninn', -apple-system, "Noto Sans TC", sans-serif;
             background-color: var(--bg-color);
-            background-image: url('bg.png'); 
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-attachment: fixed;
-            background-size: cover;
             margin: 0; padding: 20px 10px;
             display: flex; flex-direction: column; align-items: center;
             min-height: 100vh;
+            -webkit-overflow-scrolling: touch;
         }
 
         .header { 
@@ -64,6 +76,7 @@
             position: relative; z-index: 2;
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px var(--magic-glow);
             font-family: 'jf-openhuninn', sans-serif;
             transition: all 0.3s ease;
@@ -94,7 +107,6 @@
             margin-left: 10px;
         }
 
-        /* 📱 電腦版維持橫向滑動 */
         .command-grid {
             display: flex;
             overflow-x: auto;
@@ -119,6 +131,7 @@
             scroll-snap-align: start;
             transition: all 0.2s ease;
             backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
         }
 
         .cmd-card span { 
@@ -135,7 +148,7 @@
             
             .command-grid {
                 display: grid;
-                grid-template-columns: 1fr 1fr; /* 讓手機兩兩並排 */
+                grid-template-columns: 1fr 1fr;
                 overflow-x: hidden;
                 gap: 10px;
                 padding: 5px;
@@ -161,6 +174,8 @@
     </style>
 </head>
 <body>
+
+<div class="bg-fixed"></div>
 
 <div class="header">
     <h1>莉比的圖奇指令魔法書</h1>
