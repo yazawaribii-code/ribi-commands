@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>莉比的魔法指令書</title>
+    
+    <link rel="icon" href="https://presence.twitch.tv/favicon.ico" type="image/x-icon">
+
+    <style>
+        /* 🌸 載入 jf open 粉圓體 */
+        @font-face {
+            font-family: 'jf-openhuninn';
+            src: url('https://cdn.jsdelivr.net/gh/justfont/open-huninn-font@1.0/font/jf-openhuninn-1.1.woff2') format('woff2');
+            font-display: swap; 
+        }
+
+        :root {
+            --primary-pink: #ffafcc;
+            --dark-pink: #fb6f92;
+            --bg-color: #fff5f8;
+            --card-text: #444444;
+            --magic-glow: rgba(255, 175, 204, 0.3);
+        }
+
+        body {
+            font-family: 'jf-openhuninn', -apple-system, "Noto Sans TC", sans-serif;
+            background-color: var(--bg-color);
+            background-image: url('bg.png'); 
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            background-size: cover;
+            margin: 0; padding: 30px 15px;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+        }
+
+        .header { 
+            text-align: center; 
+            margin-bottom: 20px;
+            position: relative; z-index: 2; 
+        }
+
+        h1 { 
+            color: var(--dark-pink); 
+            font-size: 1.5rem; 
+            letter-spacing: 2px;
+            font-family: 'jf-openhuninn', sans-serif;
+            -webkit-text-stroke: 0.6px var(--dark-pink);
+            font-weight: 900;
+            text-shadow: 2px 2px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+        }
+
+        #search {
+            width: 100%; max-width: 320px;
+            padding: 10px 20px; 
+            border: 2px solid var(--primary-pink);
+            border-radius: 25px; font-size: 14px;
+            margin-bottom: 40px;
+            outline: none; box-sizing: border-box;
+            position: relative; z-index: 2;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px var(--magic-glow);
+            font-family: 'jf-openhuninn', sans-serif;
+        }
+
+        .category-section {
+            width: 100%; max-width: 600px; 
+            margin-bottom: 45px;
+            position: relative; z-index: 2;
+        }
+
+        /* ✨ 重新設計的專業感分類標題 */
+        .category-title {
+            display: inline-block; /* 讓背景寬度隨文字縮放 */
+            font-size: 1rem;
+            color: white; 
+            background: var(--dark-pink); /* 改為實色背景更有層次 */
+            padding: 6px 18px; 
+            margin-bottom: 20px;
+            font-weight: bold;
+            border-radius: 20px; /* 膠囊形狀 */
+            box-shadow: 3px 3px 10px var(--magic-glow);
+            font-family: 'jf-openhuninn', sans-serif;
+            position: relative;
+            left: 5px; /* 稍微往右偏移一點點比較活潑 */
+        }
+
+        .command-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 5px 5px 20px 5px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .command-grid::-webkit-scrollbar { height: 4px; }
+        .command-grid::-webkit-scrollbar-thumb { background: var(--primary-pink); border-radius: 10px; }
+
+        .cmd-card {
+            flex: 0 0 95px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px; 
+            padding: 14px 5px;
+            text-align: center; 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 229, 236, 0.6);
+            cursor: pointer;
+            scroll-snap-align: start;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .cmd-card:hover { border-color: var(--primary-pink); background: white; }
+        .cmd-card:active { transform: scale(0.92); background-color: var(--dark-pink); }
+        .cmd-card:active span { color: white; }
+        
+        .cmd-card span { 
+            font-weight: bold; 
+            color: var(--card-text); 
+            font-size: 0.9rem;
+            font-family: 'jf-openhuninn', sans-serif;
+        }
+
+        #toast {
+            position: fixed; bottom: 50px; background: rgba(251, 111, 146, 0.9);
+            color: white; padding: 10px 25px; border-radius: 30px;
+            display: none; z-index: 100;
+            font-family: 'jf-openhuninn', sans-serif;
+            box-shadow: 0 4px 15px var(--magic-glow);
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>莉比的圖奇指令魔法書</h1>
+</div>
+
+<input type="text" id="search" placeholder="🩷 搜尋指令...">
+
+<div id="main-container"></div>
+
+<div id="toast">已複製指令！✨</div>
+
+<script>
+    const categories = {
+        "⭐ 音效指令": ["啾", "欸嘿", "BB", "FBI", "PADORU", "安安", "omg", "hp", "一代一代一代", "好笑", "SW", "OH", "BM", "HA", "哭喔", "女巫", "瞎掰", "bui", "吉娃娃"],
+        "⭐ 即時互動": ["捏", "砸", "摸頭", "pon"],
+        "⭐ 釣魚遊戲": ["釣", "LB"],
+        "⭐ 互動元件說明": ["糰子說明", "星星", "糰子"],
+        "⭐ 其他": ["sr", "歌單", "委託", "簽到", "降落詞", "布丁", "dc"]
+    };
+
+    const mainContainer = document.getElementById('main-container');
+    const searchInput = document.getElementById('search');
+    const toast = document.getElementById('toast');
+
+    function render(filter = "") {
+        mainContainer.innerHTML = "";
+        for (const [catName, cmdList] of Object.entries(categories)) {
+            const filteredCmds = cmdList.filter(cmd => 
+                cmd.toLowerCase().includes(filter.toLowerCase()) || 
+                catName.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            if (filteredCmds.length > 0) {
+                const section = document.createElement('div');
+                section.className = 'category-section';
+                const title = document.createElement('div');
+                title.className = 'category-title';
+                title.innerText = catName;
+                section.appendChild(title);
+
+                const grid = document.createElement('div');
+                grid.className = 'command-grid';
+
+                filteredCmds.forEach(cmd => {
+                    const card = document.createElement('div');
+                    card.className = 'cmd-card';
+                    card.onclick = () => copyText(`!${cmd}`);
+                    card.innerHTML = `<span>!${cmd}</span>`;
+                    grid.appendChild(card);
+                });
+
+                section.appendChild(grid);
+                mainContainer.appendChild(section);
+            }
+        }
+    }
+
+    function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            toast.innerText = `已複製 ${text} ✨`;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 1000);
+            if (navigator.vibrate) navigator.vibrate(30);
+        });
+    }
+
+    searchInput.addEventListener('input', (e) => render(e.target.value));
+    render();
+</script>
+
+</body>
+</html>
