@@ -33,20 +33,20 @@
             background-position: center center;
             background-attachment: fixed;
             background-size: cover;
-            margin: 0; padding: 30px 15px;
+            margin: 0; padding: 20px 10px;
             display: flex; flex-direction: column; align-items: center;
             min-height: 100vh;
         }
 
         .header { 
             text-align: center; 
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative; z-index: 2; 
         }
 
         h1 { 
             color: var(--dark-pink); 
-            font-size: 1.5rem; 
+            font-size: 1.6rem; 
             letter-spacing: 2px;
             font-family: 'jf-openhuninn', sans-serif;
             -webkit-text-stroke: 0.6px var(--dark-pink);
@@ -55,45 +55,51 @@
         }
 
         #search {
-            width: 100%; max-width: 320px;
-            padding: 10px 20px; 
-            border: 2px solid var(--primary-pink);
-            border-radius: 25px; font-size: 14px;
-            margin-bottom: 40px;
+            width: 90%; max-width: 320px;
+            padding: 12px 20px; 
+            border: 2px solid #fff;
+            border-radius: 25px; font-size: 16px;
+            margin-bottom: 30px;
             outline: none; box-sizing: border-box;
             position: relative; z-index: 2;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px var(--magic-glow);
             font-family: 'jf-openhuninn', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        #search:focus {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: var(--primary-pink);
         }
 
         .category-section {
             width: 100%; max-width: 600px; 
-            margin-bottom: 45px;
+            margin-bottom: 35px;
             position: relative; z-index: 2;
         }
 
-        /* ✨ 重新設計的專業感分類標題 */
         .category-title {
-            display: inline-block; /* 讓背景寬度隨文字縮放 */
+            display: inline-block;
             font-size: 1rem;
             color: white; 
-            background: var(--dark-pink); /* 改為實色背景更有層次 */
+            background: var(--dark-pink); 
             padding: 6px 18px; 
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-weight: bold;
-            border-radius: 20px; /* 膠囊形狀 */
+            border-radius: 20px;
             box-shadow: 3px 3px 10px var(--magic-glow);
             font-family: 'jf-openhuninn', sans-serif;
-            position: relative;
-            left: 5px; /* 稍微往右偏移一點點比較活潑 */
+            margin-left: 10px;
         }
 
+        /* 📱 電腦版維持橫向滑動 */
         .command-grid {
             display: flex;
             overflow-x: auto;
             gap: 12px;
-            padding: 5px 5px 20px 5px;
+            padding: 5px 10px 15px 10px;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
         }
@@ -103,7 +109,7 @@
 
         .cmd-card {
             flex: 0 0 95px;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.8);
             border-radius: 15px; 
             padding: 14px 5px;
             text-align: center; 
@@ -115,15 +121,34 @@
             backdrop-filter: blur(4px);
         }
 
-        .cmd-card:hover { border-color: var(--primary-pink); background: white; }
-        .cmd-card:active { transform: scale(0.92); background-color: var(--dark-pink); }
-        .cmd-card:active span { color: white; }
-        
         .cmd-card span { 
             font-weight: bold; 
             color: var(--card-text); 
             font-size: 0.9rem;
             font-family: 'jf-openhuninn', sans-serif;
+        }
+
+        /* 📱 手機版 RWD 魔法 */
+        @media (max-width: 600px) {
+            body { padding-top: 10px; }
+            h1 { font-size: 1.4rem; }
+            
+            .command-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* 讓手機兩兩並排 */
+                overflow-x: hidden;
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .cmd-card {
+                flex: none;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 12px 5px;
+            }
+
+            .category-section { margin-bottom: 25px; }
         }
 
         #toast {
@@ -143,7 +168,7 @@
 
 <input type="text" id="search" placeholder="🩷 搜尋指令...">
 
-<div id="main-container"></div>
+<div id="main-container" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
 
 <div id="toast">已複製指令！✨</div>
 
