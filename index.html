@@ -133,8 +133,20 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .command-grid::-webkit-scrollbar { height: 4px; }
-        .command-grid::-webkit-scrollbar-thumb { background: var(--primary-pink); border-radius: 10px; }
+        /* 🎀 滑動條魔法：增加半透明白色軌道 */
+        .command-grid::-webkit-scrollbar { 
+            height: 6px; /* 稍微加粗一點點更好看 */
+        }
+        .command-grid::-webkit-scrollbar-track { 
+            background: rgba(255, 255, 255, 0.3); /* 半透明白色底色軌道 */
+            border-radius: 10px;
+            margin: 0 10px; /* 讓軌道縮進去一點，不貼邊 */
+        }
+        .command-grid::-webkit-scrollbar-thumb { 
+            background: var(--dark-pink); /* 改用深粉色，讓移動塊更跳出來 */
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.8); /* 給粉色塊加個白邊，更精緻 */
+        }
 
         .cmd-card {
             flex: 0 0 95px;
