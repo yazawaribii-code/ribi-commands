@@ -59,12 +59,18 @@
         h1 { 
             color: var(--dark-pink); 
             font-size: 1.6rem; 
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             font-family: 'jf-openhuninn', sans-serif;
-            -webkit-text-stroke: 0.6px var(--dark-pink);
             font-weight: 900;
-            text-shadow: 2px 2px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+            /* 🪄 長肉魔法：描邊顏色改為跟文字一樣，字體就會變粗 */
+            -webkit-text-stroke: 0.1px var(--dark-pink); 
+            /* 加上一層同色陰影，讓字體看起來更渾厚飽滿 */
+            text-shadow: 
+                0.1px 0.1px 0 var(--dark-pink),
+                -0.1px -0.1px 0 var(--dark-pink),
+                0 4px 8px var(--magic-glow);
         }
+
 
         #search {
             width: 90%; max-width: 320px;
