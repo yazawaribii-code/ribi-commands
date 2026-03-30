@@ -510,23 +510,29 @@
         showToast(`已刪除 !${cmd}`);
     }
 
-    function copyHTML() {
-        const catJSON = JSON.stringify(categories, null, 8);
-        const full = document.documentElement.outerHTML;
-        const marker = 'const categories = ';
-        const start = full.indexOf(marker);
-        let depth = 0, end = -1;
-        for (let i = start + marker.length; i < full.length; i++) {
-            if (full[i] === '{') depth++;
-            if (full[i] === '}') { depth--; if (depth === 0) { end = i + 1; break; } }
-        }
-        if (start === -1 || end === -1) { showToast('找不到資料，請重新整理再試'); return; }
-        const newHTML = full.slice(0, start) + marker + catJSON + full.slice(end);
-        navigator.clipboard.writeText(newHTML).then(() => {
+    async function copyHTML() {
+        try {
+            /* 用 fetch 抓原始檔案文字，不用 DOM，所以不會帶入編輯區顯示狀態 */
+            const res = await fetch(location.pathname + location.search);
+            let src = await res.text();
+
+            /* 把 categories 換成目前編輯後的版本 */
+            const catJSON = JSON.stringify(categories, null, 8);
+            const marker = 'const categories = ';
+            const start = src.indexOf(marker);
+            let depth = 0, end = -1;
+            for (let i = start + marker.length; i < src.length; i++) {
+                if (src[i] === '{') depth++;
+                if (src[i] === '}') { depth--; if (depth === 0) { end = i + 1; break; } }
+            }
+            if (start === -1 || end === -1) { showToast('找不到資料，請重新整理再試'); return; }
+
+            const newHTML = src.slice(0, start) + marker + catJSON + src.slice(end);
+            await navigator.clipboard.writeText(newHTML);
             showToast('✅ 複製成功！貼回 index.html 再上傳就好～');
-        }).catch(() => {
-            showToast('複製失敗，請用電腦瀏覽器操作');
-        });
+        } catch (e) {
+            showToast('複製失敗，請確認是用電腦瀏覽器開啟檔案');
+        }
     }
 
     function showToast(msg) {
