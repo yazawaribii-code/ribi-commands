@@ -61,14 +61,25 @@
             font-size: 1.6rem; 
             letter-spacing: 1px;
             font-family: 'jf-openhuninn', sans-serif;
-            font-weight: 900;
-            /* 🪄 長肉魔法：描邊顏色改為跟文字一樣，字體就會變粗 */
-            -webkit-text-stroke: 0.1px var(--dark-pink); 
-            /* 加上一層同色陰影，讓字體看起來更渾厚飽滿 */
+            font-weight: 600;
+            
+            /* 🪄 保留妳原本的長肉魔法 */
+            -webkit-text-stroke: 0.05px var(--dark-pink); 
+            
+            /* ✨ 妳原本的陰影 (前三行) + 新增的白色粗外框 (後面八個方向) */
             text-shadow: 
                 0.1px 0.1px 0 var(--dark-pink),
                 -0.1px -0.1px 0 var(--dark-pink),
-                0 4px 8px var(--magic-glow);
+                0 4px 8px var(--magic-glow),
+                /* 🤍 開始長白色外框：2px 厚度 */
+                2px 2px 0 #fff, 
+                -2px -2px 0 #fff, 
+                2px -2px 0 #fff, 
+                -2px 2px 0 #fff,
+                0 2px 0 #fff,
+                0 -2px 0 #fff,
+                2px 0 0 #fff,
+                -2px 0 0 #fff;
         }
 
 
