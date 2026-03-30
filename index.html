@@ -25,19 +25,18 @@
             --magic-glow: rgba(255, 175, 204, 0.3);
         }
 
-        /* ✨ 終極固定背景：解決手機抖動問題 */
+        /* ✨ 終極固定背景 */
         .bg-fixed {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh; /* 鎖死高度 */
+            height: 100vh;
             background-image: url('bg.png');
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
             z-index: -1;
-            /* 修正部分手機瀏覽器在捲動時的背景重算 */
             will-change: transform;
         }
 
@@ -51,6 +50,10 @@
         }
 
         .header { 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
             text-align: center; 
             margin-bottom: 15px;
             position: relative; z-index: 2; 
@@ -62,16 +65,12 @@
             letter-spacing: 1px;
             font-family: 'jf-openhuninn', sans-serif;
             font-weight: 600;
-            
-            /* 🪄 保留妳原本的長肉魔法 */
+            margin: 0;
             -webkit-text-stroke: 0.05px var(--dark-pink); 
-            
-            /* ✨ 妳原本的陰影 (前三行) + 新增的白色粗外框 (後面八個方向) */
             text-shadow: 
                 0.1px 0.1px 0 var(--dark-pink),
                 -0.1px -0.1px 0 var(--dark-pink),
                 0 4px 8px var(--magic-glow),
-                /* 🤍 開始長白色外框：2px 厚度 */
                 2px 2px 0 #fff, 
                 -2px -2px 0 #fff, 
                 2px -2px 0 #fff, 
@@ -82,6 +81,57 @@
                 -2px 0 0 #fff;
         }
 
+        /* 🪄 魔法棒與粒子動畫區 */
+        .magic-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .magic-wand {
+            width: 35px;
+            height: auto;
+            animation: wandSwing 2s ease-in-out infinite;
+            transform-origin: bottom left;
+            z-index: 3;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 15px;
+            opacity: 0;
+            animation: particleFloatDown 2.5s infinite; /* 稍微減慢一點點更有飄落感 */
+        }
+
+        @keyframes wandSwing {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(25deg); }
+        }
+
+        /* ✨ 往下飄落的魔法動畫 */
+        @keyframes particleFloatDown {
+            0% { 
+                transform: translate(0, 0) scale(0) rotate(0deg); 
+                opacity: 0; 
+            }
+            20% { 
+                opacity: 1; 
+            }
+            100% { 
+                /* 往下移動 (50px) 並稍微往右偏移 (15px) */
+                transform: translate(15px, 50px) scale(1.1) rotate(270deg); 
+                opacity: 0; 
+            }
+        }
 
         #search {
             width: 90%; max-width: 320px;
@@ -133,21 +183,16 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* 🎀 莉比專屬：淡粉色滑動塊 + 軌道魔法 */
-        .command-grid::-webkit-scrollbar { 
-            height: 6px; 
-        }
+        /* 🎀 莉比專屬滾動條 */
+        .command-grid::-webkit-scrollbar { height: 6px; }
         .command-grid::-webkit-scrollbar-track { 
-            /* 🤍 這是妳要的白色半透明長軌道 */
             background: rgba(255, 255, 255, 0.4); 
             border-radius: 10px;
             margin: 0 10px;
         }
         .command-grid::-webkit-scrollbar-thumb { 
-            /* 🩷 回歸原本的淡粉色 */
             background: var(--primary-pink); 
             border-radius: 10px;
-            /* 加一個超細的白色邊框，讓它在白色軌道上還是有層次感 */
             border: 1px solid rgba(255, 255, 255, 0.9);
         }
 
@@ -173,11 +218,9 @@
             font-family: 'jf-openhuninn', sans-serif;
         }
 
-        /* 📱 手機版 RWD 魔法 */
         @media (max-width: 600px) {
             body { padding-top: 10px; }
             h1 { font-size: 1.4rem; }
-            
             .command-grid {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
@@ -185,15 +228,8 @@
                 gap: 10px;
                 padding: 5px;
             }
-
-            .cmd-card {
-                flex: none;
-                width: 100%;
-                box-sizing: border-box;
-                padding: 12px 5px;
-            }
-
-            .category-section { margin-bottom: 25px; }
+            .cmd-card { width: 100%; }
+            .magic-wand { width: 30px; }
         }
 
         #toast {
@@ -211,6 +247,14 @@
 
 <div class="header">
     <h1>莉比的圖奇指令魔法書</h1>
+    <div class="magic-container">
+        <img src="wand.png" class="magic-wand" alt="魔法棒">
+        <div class="particles">
+            <img src="star.png" class="particle" style="animation-delay: 0s; top: -10px; left: 15px;">
+            <img src="heart.png" class="particle" style="animation-delay: 0.8s; top: -5px; left: 25px;">
+            <img src="star.png" class="particle" style="animation-delay: 1.6s; top: -8px; left: 10px;">
+        </div>
+    </div>
 </div>
 
 <input type="text" id="search" placeholder="🩷 搜尋指令...">
