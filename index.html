@@ -133,19 +133,22 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* 🎀 滑動條魔法：增加半透明白色軌道 */
+        /* 🎀 莉比專屬：淡粉色滑動塊 + 軌道魔法 */
         .command-grid::-webkit-scrollbar { 
-            height: 6px; /* 稍微加粗一點點更好看 */
+            height: 6px; 
         }
         .command-grid::-webkit-scrollbar-track { 
-            background: rgba(255, 255, 255, 0.3); /* 半透明白色底色軌道 */
+            /* 🤍 這是妳要的白色半透明長軌道 */
+            background: rgba(255, 255, 255, 0.4); 
             border-radius: 10px;
-            margin: 0 10px; /* 讓軌道縮進去一點，不貼邊 */
+            margin: 0 10px;
         }
         .command-grid::-webkit-scrollbar-thumb { 
-            background: var(--dark-pink); /* 改用深粉色，讓移動塊更跳出來 */
+            /* 🩷 回歸原本的淡粉色 */
+            background: var(--primary-pink); 
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.8); /* 給粉色塊加個白邊，更精緻 */
+            /* 加一個超細的白色邊框，讓它在白色軌道上還是有層次感 */
+            border: 1px solid rgba(255, 255, 255, 0.9);
         }
 
         .cmd-card {
